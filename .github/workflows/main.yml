@@ -33,6 +33,7 @@ jobs:
        with:
        # Artifact name
         name: petstore-api-python.zip
+        skip_unpack: true
         
      - name: Veracode Upload and Scan Action Step
        uses: veracode/veracode-uploadandscan-action@master
