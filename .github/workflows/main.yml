@@ -46,6 +46,7 @@ jobs:
   Dockerize-Publish:
     runs-on: [ubuntu-latest]
     steps:
+      - uses: actions/checkout@v2
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
