@@ -27,7 +27,8 @@ jobs:
       - name: List folder contents for visual
         run: |
          ls -la    
-         
+
+# Submit to Veracode for SAST and SCA Scan
       - name: Veracode Upload and Scan Action Step
         uses: veracode/veracode-uploadandscan-action@master
         id: upload_and_scan
@@ -41,4 +42,16 @@ jobs:
           vkey: '${{ secrets.VERACODE_API_KEY }}'
         continue-on-error: true  
         
-        
+# Dockerize and Publish
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+         username: ${{ secrets.DOCKERHUB_USERNAME }}
+         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: .
+          push: true
+          tags: veracodedemolabs/petstore_api_python_github:latest
