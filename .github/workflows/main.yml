@@ -12,8 +12,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
-        
-        
+            
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
@@ -24,3 +23,28 @@ jobs:
       - name: List folder contents for visual
         run: |
          ls -la
+
+  Submit-SAST-SCA:
+     runs-on: [ubuntu-latest]
+     needs: Checkout-Artifact
+     steps:
+     - name: Download a Build Artifact
+       uses: actions/download-artifact@v3.0.1
+       with:
+       # Artifact name
+        name: petstore-api-python.zip
+        
+     - name: Veracode Upload and Scan Action Step
+       uses: veracode/veracode-uploadandscan-action@master
+       id: upload_and_scan
+       with:
+         appname: 'PetstoreAPI-Python-GitHub'
+         createprofile: false
+         version: '${{ github.run_id }}-'
+         criticality: Medium
+         filepath: 'petstore-api-python.zip'
+         vid: '${{ secrets.VERACODE_API_ID }}'
+         vkey: '${{ secrets.VERACODE_API_KEY }}'
+       continue-on-error: true  
+        
+        
