@@ -1,0 +1,22 @@
+
+name: 1-Checkout-Artifact-Dockerize-Scan-SynchIssues
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: "0 22 * * 1,3,5"
+
+# Checkout, Artifact
+jobs:
+  Checkout-Artifact:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+        
+        
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+        # Artifact name
+          name: petstore-api-python.zip
+          path: ./
