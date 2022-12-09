@@ -1,4 +1,3 @@
-
 name: 1-Checkout-Artifact-Dockerize-Scan-SynchIssues
 
 on:
@@ -20,7 +19,7 @@ jobs:
           name: petstore-api-python.zip
           path: ./
 
-      - name: List folder contents for visual
+      - name: ZIP up required files application files
         run: |
          zip petstore-api-python.zip api.py requirements.txt
          
