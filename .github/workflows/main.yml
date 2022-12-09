@@ -34,6 +34,10 @@ jobs:
        # Artifact name
         name: petstore-api-python.zip
         skip_unpack: true
+
+     - name: List folder contents for visual to confirm artifact file exists
+       run: |
+         ls -la
         
      - name: Veracode Upload and Scan Action Step
        uses: veracode/veracode-uploadandscan-action@master
