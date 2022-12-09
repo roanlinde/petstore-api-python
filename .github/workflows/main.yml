@@ -22,7 +22,7 @@ jobs:
 
       - name: List folder contents for visual
         run: |
-         zip petstore-api-python.zip *.*
+         zip petstore-api-python.zip api.py requirements.txt
          
       - name: List folder contents for visual
         run: |
