@@ -20,3 +20,7 @@ jobs:
         # Artifact name
           name: petstore-api-python.zip
           path: ./
+
+      - name: List folder contents for visual
+        run: |
+         ls -la
