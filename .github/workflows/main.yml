@@ -58,4 +58,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: veracodedemolabs/petstore_api_python_github:latest
+          tags: veracodedemolabs/petstore_api_python_github:'${{ github.run_id }}-'
