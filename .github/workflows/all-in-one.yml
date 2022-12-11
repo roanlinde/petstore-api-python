@@ -17,8 +17,12 @@ jobs:
         with:
         # Artifact name
           name: petstore-api-python.zip
-          path: ./
-
+          path: |
+           apy.py
+           requirements.txt
+           Dockerfile
+           start.sh
+           
       - name: ZIP up required files application files
         run: |
          zip petstore-api-python.zip api.py requirements.txt
