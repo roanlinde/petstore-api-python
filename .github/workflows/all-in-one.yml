@@ -66,10 +66,11 @@ jobs:
     needs: Dockerize-Publish
     steps:         
       - name: Terminate previous QA Docker image to run new version
+        continue-on-error: true
         run: |
          docker stop petstore_api_python_github
          docker rm petstore_api_python_github
-        continue-on-error: true
+        
        
 # Pull new Docker image to QA web server
       - name: Pull new Docker image to QA web server
