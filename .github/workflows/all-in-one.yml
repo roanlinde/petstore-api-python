@@ -84,4 +84,4 @@ jobs:
 # Run Docker image on QA webserver for testing
       - name: Run Docker image
         run: |
-         docker run -d --name petstore_api_python_github -p 5080:5000 veracodedemolabs/petstore_api_python_github:latest
+         docker run -d --name petstore_api_python_github -p 5000:5000 veracodedemolabs/petstore_api_python_github:latest
