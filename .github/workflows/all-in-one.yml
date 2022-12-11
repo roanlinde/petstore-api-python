@@ -1,4 +1,4 @@
-name: 1-Checkout-Artifact-Dockerize-Scan-SynchIssues
+name: Everything in a single workflow
 
 on:
   workflow_dispatch:
@@ -59,3 +59,25 @@ jobs:
           context: .
           push: true
           tags: veracodedemolabs/petstore_api_python_github:latest
+          
+# Deploy and run the Docker image for QA and DAST testing
+  Deploy-Docker-Image-QA-Server:
+    runs-on: [self-hosted]
+    needs: Dockerize-Publish
+    steps:         
+      - name: Terminate previous QA Docker image to run new version
+        run: |
+         docker stop petstore_api_python_github
+         docker rm petstore_api_python_github
+        continue-on-error: true
+       
+# Pull new Docker image to QA web server
+      - name: Pull new Docker image to QA web server
+        run: |
+         docker pull veracodedemolabs/petstore_api_python_github:latest
+         
+# Run Docker image on QA webserver for testing
+      - name: Run Docker image
+        run: |
+         docker run -d --name petstore_api_python_github -p 5080:5000 veracodedemolabs/petstore_api_python_github:latest
+         
