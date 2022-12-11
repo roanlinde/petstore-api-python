@@ -49,6 +49,7 @@ jobs:
 
   Dockerize-Publish:
     runs-on: [ubuntu-latest]
+    needs: Checkout-Artifact
     steps:
       - uses: actions/checkout@v2
       - name: Login to Docker Hub
@@ -84,4 +85,3 @@ jobs:
       - name: Run Docker image
         run: |
          docker run -d --name petstore_api_python_github -p 5080:5000 veracodedemolabs/petstore_api_python_github:latest
-         
