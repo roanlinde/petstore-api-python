@@ -97,6 +97,24 @@ jobs:
         run: |
          docker run -d --name petstore_api_python_github -p 5000:5000 veracodedemolabs/petstore_api_python_github:latest
 
+# Submit DAST Scan against QA server.  We use the veracode/api-signing image for this.
+  Submit-DAST-Scan:
+    runs-on: ubuntu-latest
+    needs: Deploy-Docker-Image-QA-Server
+    container: 
+      image: veracode/api-signing:latest
+    steps:            
+
+# Download the Veracode DAST Config artifact from workflow 1-Checkout-Build-Artifact.yml
+
+      - name: Download Veracode-DAST-Config
+        uses: actions/download-artifact@v3.0.1
+        with:
+          # Artifact name
+          name: Veracode-DAST-Config
+          # Destination path
+          path: /tmp/
+
 # Update the DAST Scan Name to be uniuqe (action: update find / replace text)        
       - name: Update DAST config file with uniuqe scan name
         run: |
@@ -108,24 +126,7 @@ jobs:
       - name: Display DAST config file with uniuqe scan name
         run: |
           cat /tmp/vc-dast-config.json
-
-# Submit DAST Scan against QA server.  We use the veracode/api-signing image for this.
-  Submit-DAST-Scan:
-    runs-on: ubuntu-latest
-    container: 
-      image: veracode/api-signing:latest
-    steps:            
-
-# Download the Veracode DAST Config artifact from workflow 1-Checkout-Build-Artifact.yml
-
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v3.0.1
-        with:
-          # Artifact name
-          name: Veracode-DAST-Config
-          # Destination path
-          path: /tmp/
-
+          
 # DAST scan submission using the DAST API 
       - name: Submit Veracode DAST Scan
         run: |
