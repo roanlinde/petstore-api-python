@@ -4,7 +4,7 @@ info:
   description: OpenAPI 3 spec for petstore-api-flask
   version: "0.1"
 servers:
-- url: http://localhost:5000
+- url: http://petstore-api-python-github.qa:5000
 components: 
   securitySchemes:
     bearerAuth:
@@ -626,5 +626,3 @@ paths:
         401:
           description: Missing Authorization header
           content: { }
-
-
