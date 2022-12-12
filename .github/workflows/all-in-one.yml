@@ -26,6 +26,14 @@ jobs:
            requirements.txt
            Dockerfile
            start.sh
+     
+# Artifact the Veracode DAST config to use in a following workflow     
+      - name: Upload DAST Config for Later Use
+        uses: actions/upload-artifact@v3.1.0
+        with:
+        # Artifact name
+          name: Veracode-DAST-Config
+          path: vc-dast-config.json
            
       - name: ZIP up required files application files for SAST scan
         run: |
@@ -100,10 +108,27 @@ jobs:
       - name: Display DAST config file with uniuqe scan name
         run: |
           cat /tmp/vc-dast-config.json
- 
+
+# Submit DAST Scan against QA server.  We use the veracode/api-signing image for this.
+  Submit-DAST-Scan:
+    runs-on: ubuntu-latest
+    container: 
+      image: veracode/api-signing:latest
+    steps:            
+
+# Download the Veracode DAST Config artifact from workflow 1-Checkout-Build-Artifact.yml
+
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.1
+        with:
+          # Artifact name
+          name: Veracode-DAST-Config
+          # Destination path
+          path: /tmp/
+
 # DAST scan submission using the DAST API 
       - name: Submit Veracode DAST Scan
         run: |
          export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
          export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
-         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < /tmp/vc-dast-config.json
+         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses?job_options=run_verification=false&scan_type=API_SCAN" < /tmp/vc-dast-config.json 
