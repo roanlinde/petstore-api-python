@@ -105,15 +105,15 @@ jobs:
       image: veracode/api-signing:latest
     steps:            
 
-# Download the Veracode DAST Config artifact from workflow 1-Checkout-Build-Artifact.yml
-
-      - name: Download Veracode-DAST-Config
-        uses: actions/download-artifact@v3.0.1
-        with:
-          # Artifact name
-          name: Veracode-DAST-Config
-          # Destination path
-          path: /tmp/vc-dast-config.json
+# Download the Veracode DAST Config artifact 
+      - name: Download Checkout-Build-Artifact Workflow Artifact
+        uses: qiwi-forks/action-download-artifact@v2
+        with: 
+         github_token: ${{secrets.GITHUB_TOKEN}}
+         workflow: all-in-one.yml
+         name: Veracode-DAST-Config
+         path: /tmp/
+        continue-on-error: false
 
 # Update the DAST Scan Name to be uniuqe (action: update find / replace text)        
       - name: Update DAST config file with uniuqe scan name
