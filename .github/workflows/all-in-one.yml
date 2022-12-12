@@ -1,21 +1,25 @@
 name: Everything in a single workflow
 
+# This workflow will checkout the code, ZIP the Python file, and create an artifact for use in following workflows.
 on:
+  # Enables manual runs
   workflow_dispatch:
+  # Runs "Every Sunday" (see https://crontab.guru)
   schedule:
   - cron: "0 22 * * 1,3,5"
 
-# Checkout, Artifact
 jobs:
-  Checkout-Artifact:
+  Checkout-Artifact-Scan:
     runs-on: [ubuntu-latest]
     steps:
+
+# Checkout
       - uses: actions/checkout@v2
             
+# Create artifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
-        # Artifact name
           name: petstore-api-python.zip
           path: |
            apy.py
@@ -23,9 +27,9 @@ jobs:
            Dockerfile
            start.sh
            
-      - name: ZIP up required files application files
+      - name: ZIP up required files application files for SAST scan
         run: |
-         zip petstore-api-python.zip api.py requirements.txt
+         zip petstore-api-python-app.zip api.py requirements.txt
          
       - name: List folder contents for visual
         run: |
@@ -40,16 +44,15 @@ jobs:
           createprofile: false
           version: '${{ github.run_id }}-'
           criticality: Medium
-          filepath: 'petstore-api-python.zip'
+          filepath: 'petstore-api-python-app.zip'
           vid: '${{ secrets.VERACODE_API_ID }}'
           vkey: '${{ secrets.VERACODE_API_KEY }}'
         continue-on-error: true  
         
 # Dockerize and Publish
-
   Dockerize-Publish:
     runs-on: [ubuntu-latest]
-    needs: Checkout-Artifact
+    needs: Checkout-Artifact-Scan
     steps:
       - uses: actions/checkout@v2
       - name: Login to Docker Hub
@@ -85,3 +88,22 @@ jobs:
       - name: Run Docker image
         run: |
          docker run -d --name petstore_api_python_github -p 5000:5000 veracodedemolabs/petstore_api_python_github:latest
+
+# Update the DAST Scan Name to be uniuqe (action: update find / replace text)        
+      - name: Update DAST config file with uniuqe scan name
+        run: |
+         cd /tmp
+         NOW=$(date +"%m-%d-%Y-%T")
+         sed -i 's/Petstore_API_Python_Github/Petstore_API_Python_Github-'${NOW}'/g' vc-dast-config.json
+
+# Visual confirmation of the scan submission details
+      - name: Display DAST config file with uniuqe scan name
+        run: |
+          cat /tmp/vc-dast-config.json
+ 
+# DAST scan submission using the DAST API 
+      - name: Submit Veracode DAST Scan
+        run: |
+         export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
+         export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
+         http --auth-type=veracode_hmac POST "https://api.veracode.com/was/configservice/v1/analyses" < /tmp/vc-dast-config.json
