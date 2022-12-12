@@ -1,0 +1,40 @@
+{
+  "name": "VeraDemo-Java-GitHub",
+  "scan_setting": {
+    "custom_hosts": [
+      {
+        "host_name": "petstore-api-python-github.qa",
+        "ip_address": "98.214.52.114"
+      }
+    ],
+    "max_browsers": 10
+  },
+  "scanner_variables": [
+    {
+      "reference_key": "string",
+      "value": "string",
+      "description": "string"
+    }
+  ], 
+  "scans": [
+    {
+      "scan_config_request": {
+        "target_url": {
+          "url": "petstore-api-python-github:5000"
+        },
+        "api_scan_setting": 
+        {
+          "spec_id": spec_id,
+        }
+      }
+    }
+  ],
+  "schedule": {
+    "duration": {
+      "length": 30,
+      "unit": "MINUTE"
+    },
+    "scheduled": true,
+    "now": true
+  }
+}
