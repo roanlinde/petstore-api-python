@@ -1,0 +1,36 @@
+name: 1-Checkout-Build-Artifact
+
+# This workflow will checkout the code, ZIP the Python file, and create an artifact for use in following workflows.
+on:
+  # Enables manual runs
+  workflow_dispatch:
+  # Runs "Every Sunday" (see https://crontab.guru)
+  schedule:
+  - cron: "0 22 * * 1,3,5"
+
+jobs:
+  Checkout-Artifact-Scan:
+    runs-on: [ubuntu-latest]
+    steps:
+
+# Checkout
+      - uses: actions/checkout@v2
+            
+# Create application artifact
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: petstore-api-python.zip
+          path: |
+           apy.py
+           requirements.txt
+           Dockerfile
+           start.sh
+     
+# Artifact the Veracode DAST config to use in a following workflow     
+      - name: Upload DAST Config for Later Use
+        uses: actions/upload-artifact@v3.1.0
+        with:
+        # Artifact name
+          name: Veracode-DAST-Config
+          path: vc-dast-config.json
