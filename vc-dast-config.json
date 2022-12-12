@@ -20,11 +20,11 @@
     {
       "scan_config_request": {
         "target_url": {
-          "url": "petstore-api-python-github:5000"
+          "url": "http://petstore-api-python-github.qa:5000"
         },
         "api_scan_setting": 
         {
-          "spec_id": "743431aa3b2b925211b77b855e12c862",
+          "spec_id": "743431aa3b2b925211b77b855e12c862"
         }
       }
     }
