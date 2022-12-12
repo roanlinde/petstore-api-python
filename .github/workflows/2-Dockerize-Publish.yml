@@ -1,0 +1,34 @@
+name: 2-Build and Publish Docker Image
+
+# This step will build and publish the Docker image to https://hub.docker.com/repository/docker/veracodedemolabs/petstore_api_python_github
+# It will run manually or automatically after 1-Checkout-Build-Artifact.yml completes.
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["1-Checkout-Build-Artifact"]
+    types:
+      - completed
+
+jobs:
+  Dockerize-Publish:
+    runs-on: ubuntu-latest
+    steps:
+
+# Checkout code
+    - uses: actions/checkout@v3
+
+# Login to Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+# Build and push Docker image
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: .
+          push: true
+          tags: veracodedemolabs/petstore_api_python_github:latest
