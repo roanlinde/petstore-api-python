@@ -113,7 +113,7 @@ jobs:
           # Artifact name
           name: Veracode-DAST-Config
           # Destination path
-          path: /tmp/
+          path: /tmp/vc-dast-config.json
 
 # Update the DAST Scan Name to be uniuqe (action: update find / replace text)        
       - name: Update DAST config file with uniuqe scan name
