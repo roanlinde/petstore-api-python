@@ -4,9 +4,9 @@ name: 1-Checkout-Build-Artifact
 on:
   # Enables manual runs
   workflow_dispatch:
-  # Runs "Every Sunday" (see https://crontab.guru)
+  # Runs "Every day at 4:05" (see https://crontab.guru)
   schedule:
-  - cron: "0 22 * * 1,3,5"
+  - cron: "5 4 * * *"
 
 jobs:
   Checkout-Artifact-Scan:
