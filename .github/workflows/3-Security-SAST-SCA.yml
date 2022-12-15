@@ -21,7 +21,7 @@ jobs:
         with: 
          github_token: ${{secrets.GITHUB_TOKEN}}
          workflow: 1-Checkout-Build-Artifact.yml
-         name: petstore-api-python.zip
+         name: petstore-api-python
          skip_unpack: true
         continue-on-error: false
 
