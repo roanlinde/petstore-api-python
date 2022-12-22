@@ -1,6 +1,7 @@
 name: 2-Build and Publish Docker Image
 
 # This step will build and publish the Docker image to https://hub.docker.com/repository/docker/veracodedemolabs/petstore_api_python_github
+# It then runs a SCA Agent scan against the repo and the container.
 # It will run manually or automatically after 1-Checkout-Build-Artifact.yml completes.
 
 on:
@@ -32,6 +33,8 @@ jobs:
         context: .
         push: true
         tags: veracodedemolabs/petstore_api_python_github:latest
+
+# Running Software Composition Analysis against the local repo and the container
 
     - name: SCA Agent Scan of Repo
       env: 
