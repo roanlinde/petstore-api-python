@@ -80,12 +80,13 @@ jobs:
           export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
           export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
           ls -la
-          ./veracode scan --source /home/runner/work/petstore-api-python/petstore-api-python --type directory --format table -o output.txt
+          ./veracode scan --source /home/runner/work/petstore-api-python/petstore-api-python --type directory --format table -o IssuesSource.txt
+          ./veracode sbom --source veracodedemolabs/petstore_api_python_github:latest --type image --format table -o SBOM.txt
 
 # Store security artifacts
       - name: Upload security artifacts
         uses: actions/upload-artifact@v3.1.0
         with:
           name: SecurityArtifacts
-          path: ./**       
+          path: ./*.txt     
           
