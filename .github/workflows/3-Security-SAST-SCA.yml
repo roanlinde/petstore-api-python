@@ -74,10 +74,11 @@ jobs:
     steps:
       - name: Veracode Container Scanner
         run: |
-          cd /tmp
           curl -fsS https://tools.veracode.com/veracode-cli/install | sh
           export VERACODE_API_KEY_ID=${{ secrets.VERACODE_API_ID }}
           export VERACODE_API_KEY_SECRET=${{ secrets.VERACODE_API_KEY }}
+          cd / 
+          ls -la
           /veracode scan --source . --type directory --format table -o output.txt
 
 # Store security artifacts
