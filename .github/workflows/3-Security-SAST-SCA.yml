@@ -14,7 +14,8 @@ jobs:
   Security-Scan-SAST-SCA:
     runs-on: ubuntu-latest
     steps:
-
+# Checkout code
+      - uses: actions/checkout@v2
 # Download the most recent build artifact from the 1-Checkout-Build-Artifact worfklow.
       - name: Download Checkout-Build-Artifact Workflow Artifact
         uses: qiwi-forks/action-download-artifact@v2
