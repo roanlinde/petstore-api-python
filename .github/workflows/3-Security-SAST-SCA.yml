@@ -88,5 +88,5 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: SecurityArtifacts
-          path: ./*.txt     
+          path: ./tmp/*.txt     
           
