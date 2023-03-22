@@ -24,12 +24,12 @@ jobs:
 # Pull new Docker image to QA web server
       - name: Pull new Docker image to QA web server
         run: |
-         docker pull veracodedemolabs/petstore_api_python_github:latest
+         docker pull roanlinde/petstore_api_python_github:latest
          
 # Run Docker image on QA webserver for testing
       - name: Run Docker image
         run: |
-         docker run -d --name petstore_api_python_github -p 5000:5000 veracodedemolabs/petstore_api_python_github:latest
+         docker run -d --name petstore_api_python_github -p 5000:5000 roanlinde/petstore_api_python_github:latest
          
 # Workflow to run DAST Scan against QA server.  We use the veracode/api-signing image for this.
   Submit-DAST-Scan:
